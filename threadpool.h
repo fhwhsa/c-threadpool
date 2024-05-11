@@ -37,17 +37,6 @@ struct _cthread_pool
 };
 
 /**
- * function: print_error
- * description: 输出错误信息
- * params:   filename       出错文件名
- *           funcname       出错函数名
- *           linenum        出错位置
- *           errorfunc      出错函数
- *           ret            错误数字
-*/
-void thread_perror(char* filename, char* funcname, int linenum, char* errorfunc, int ret);
-
-/**
  * function: worker
  * description: 线程工作函数
  * params:  
