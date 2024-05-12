@@ -1,3 +1,6 @@
+#ifndef _WRAP_H_
+#define _WRAP_H_
+
 #include <pthread.h>
 #include <malloc.h>
 
@@ -16,6 +19,8 @@ int Pthread_attr_init(pthread_attr_t *attr, char* filename, char* funcname, int 
 
 int Pthread_attr_setdetachstate(pthread_attr_t *attr, int detachstate, char* filename, char* funcname, int line);
 
+int Pthread_cond_broadcast(pthread_cond_t *cond);
+
 int Pthread_cond_destroy(pthread_cond_t *cond, char* filename, char* funcname, int line);
 
 int Pthread_cond_init(pthread_cond_t *cond,
@@ -29,6 +34,8 @@ int Pthread_cond_wait(pthread_cond_t *cond,
 int Pthread_create(pthread_t *thread, const pthread_attr_t *attr,
                           void *(*start_routine) (void *), void *arg, char* filename, char* funcname, int line);
 
+int Pthread_detach(pthread_t thread, char *filename, char *funcname, int line);
+
 int Pthread_join(pthread_t thread, void **retval, char* filename, char* funcname, int line);
 
 int Pthread_mutex_destroy(pthread_mutex_t *mutex, char* filename, char* funcname, int line);
@@ -40,3 +47,5 @@ int Pthread_mutex_lock(pthread_mutex_t *mutex, char* filename, char* funcname, i
 
 int Pthread_mutex_unlock(pthread_mutex_t *mutex, char* filename, char* funcname, int line);
 
+
+#endif

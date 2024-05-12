@@ -12,7 +12,7 @@ void func(void* arg)
 
 int main()
 {
-    cthread_pool* pool = cthread_pool_create(10, 3);
+    cthread_pool* pool = cthread_pool_create(10, 10, 3, NULL, -1, -1);
     char str[20][1024];
     bzero(str, sizeof str);
     for (int i = 0; i < 20; ++i)
@@ -20,6 +20,7 @@ int main()
         sprintf(str[i], "hello %d", i);
         cthread_pool_add_task(pool, str[i], func, (void*)i);
     }
-    sleep(10);
+    sleep(20);
+    printf("main destroy...\n"); 
     cthread_pool_destroy(pool);
 }

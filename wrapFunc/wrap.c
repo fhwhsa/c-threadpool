@@ -22,6 +22,14 @@ int Pthread_attr_setdetachstate(pthread_attr_t *attr, int detachstate, char *fil
     return ret;
 }
 
+int Pthread_cond_broadcast(pthread_cond_t *cond, char *filename, char *funcname, int line)
+{
+    int ret = pthread_cond_broadcast(cond);
+    if (0 != ret)
+        thread_perror(filename, funcname, line, "pthread_cond_broadcast", ret);
+    return ret;
+}
+
 int Pthread_cond_destroy(pthread_cond_t *cond, char *filename, char *funcname, int line)
 {
     int ret = pthread_attr_destroy(cond);
@@ -62,6 +70,14 @@ int Pthread_create(pthread_t *thread, const pthread_attr_t *attr,
     int ret = pthread_create(thread, attr, start_routine, arg);
     if (0 != ret)
         thread_perror(filename, funcname, line, "Pthread_create", ret);
+    return ret;
+}
+
+int Pthread_detach(pthread_t thread, char *filename, char *funcname, int line)
+{
+    int ret = pthread_detach(thread);
+    if (0 != ret)
+        thread_perror(filename, funcname, line, "pthread_detach", ret);
     return ret;
 }
 
