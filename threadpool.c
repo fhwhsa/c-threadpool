@@ -31,7 +31,7 @@ void *manager(void *arg)
             int add = 0;
             for (int i = 0; i < pool->max_thread_num && add < single_chang_num && pool->curr_live_thread_num < pool->max_thread_num; ++i)
             {
-                if (ESRCH == pthread_kill(pool->thread_list[i], 0))
+                if (0 == pool->thread_list[i] || ESRCH == pthread_kill(pool->thread_list[i], 0))
                 {
                     if (0 == Pthread_create(&pool->thread_list[i], NULL, worker, pool, __FILE__, __func__, __LINE__))
                         ++pool->curr_live_thread_num, ++add;
@@ -156,13 +156,14 @@ cthread_pool *cthread_pool_create(int max_task_n, int max_thread_n, int min_live
 
         pool->task_queue = (work_task *)calloc(sizeof(work_task), pool->max_task_num + 1);
         pool->thread_list = (pthread_t)calloc(sizeof(pthread_t), pool->max_thread_num);
+        memset(pool->thread_list, 0, sizeof(pool->thread_list));
         if (NULL == pool->task_queue || NULL == pool->thread_list)
         {
             printf("%s:%s:%d: malloc error\n", __FILE__, __func__, __LINE__);
             break;
         }
 
-        for (int i = 0; i < pool->max_thread_num; ++i)
+        for (int i = 0; i < pool->min_live_thread_num; ++i)
         {
             if (0 != Pthread_create(&pool->thread_list[i], NULL, worker, pool, __FILE__, __func__, __LINE__))
                 break;
@@ -236,7 +237,7 @@ int cthread_pool_destroy(cthread_pool *pool)
 
     for (int i = 0; i < pool->max_thread_num; ++i)
     {
-        if (ESRCH == pthread_kill(pool->thread_list[i], 0))
+        if (0 == pool->thread_list[i] || ESRCH == pthread_kill(pool->thread_list[i], 0))
             continue;
         if (0 != Pthread_join(pool->thread_list[i], NULL, __FILE__, __func__, __LINE__))
             Pthread_detach(pool->thread_list[i], __FILE__, __func__, __LINE__);
