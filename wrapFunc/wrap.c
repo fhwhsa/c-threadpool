@@ -32,7 +32,7 @@ int Pthread_cond_broadcast(pthread_cond_t *cond, char *filename, char *funcname,
 
 int Pthread_cond_destroy(pthread_cond_t *cond, char *filename, char *funcname, int line)
 {
-    int ret = pthread_attr_destroy(cond);
+    int ret = pthread_cond_destroy(cond);
     if (0 != ret)
         thread_perror(filename, funcname, line, "pthread_attr_destroy", ret);
     return ret;
